@@ -51,9 +51,12 @@ class SupervisorController extends Controller
                 ->where('tipo', 'Inicio de jornada')
                 ->first();
 
-                
-                $horaFin = $request->hora;
-                
+            if( $exists->hora_fin ){
+                throw new \Exception("Ya se ha registrado un Fin de jornada para este empleado en esta fecha, $fecha");
+            }
+
+            $horaFin = $request->hora;
+
             $horaInicio = Carbon::parse($exists->hora_inicio);
             $horaFin = Carbon::parse($horaFin);
             
