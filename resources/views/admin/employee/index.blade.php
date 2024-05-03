@@ -10,25 +10,46 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-bordered table-striped dataTable">
+            <table id="employees_table" class="table table-bordered table-striped dataTable">
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Horas</th>
+                        <th>Hora de inicio</th>
+                        <th>Hora de Fin</th>
+                        <th>Total horas</th>
+                        <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $user)
+                    @foreach ($finalArray as $user)
 
                         <tr>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>
-                                <button class="btn btn-outline-primary">
-                                    Aceptar horas
-                                </button>
-                            </td>
+                            <td>{{ $user["name"] }}</td>
+                            <td>{{ $user["hora_inicio"] }}</td>
+                            <td>{{ $user["hora_fin"] }}</td>
+                            <td>{{ $user["horas"] }}</td>
+                            <td>{{ $user["fecha"] }}</td>
+                            @if ( $user["hora_fin"] == null)
+                                
+                                <td>
+                                    <button disabled class="btn btn-outline-primary">
+                                        En curso
+                                    </button>
+                                    <button class="btn btn-outline-danger">
+                                        Rechazar horas
+                                    </button>
+                                </td>
+                            @else
+                                <td>
+                                    <button class="btn btn-outline-primary">
+                                        Aceptar horas
+                                    </button>
+                                    <button class="btn btn-outline-danger">
+                                        Rechazar horas
+                                    </button>
+                                </td>
+                            @endif
                         </tr>
                         
                     @endforeach
@@ -46,5 +67,9 @@
 @endsection
 
 @section('js')
+
+<script>
+    let table = new DataTable('#employees_table');
+</script>
 
 @endsection

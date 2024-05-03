@@ -46,6 +46,14 @@ const onChangBackGroundColorChangeTextColor = ( currentTheme ) => {
    document.getElementById("HomeAppName").style.color = currentTheme === "enabled" ? "#fff" : "#333";
    document.getElementById("SunnyIcon").style.color = currentTheme === "enabled" ? "#fff" : "#333";
    document.getElementById("MoonIcon").style.color = currentTheme === "enabled" ? "#fff" : "#333";
+
+   if ( document.getElementById("loginCard") ) {
+      document.getElementById("loginCard").style.backgroundColor = currentTheme === "enabled" ? "hsl(217, 27%, 12%)" : "#fff";
+      document.getElementById("loginCardTitle").style.color = currentTheme === "enabled" ? "#fff" : "#333";
+      document.getElementById("emailText").style.color = currentTheme === "enabled" ? "#fff" : "#333";
+      document.getElementById("passwordCardLogin").style.color = currentTheme === "enabled" ? "#fff" : "#333";
+   }
+
 };
 
 // Dark and Light Mode on Switch Click

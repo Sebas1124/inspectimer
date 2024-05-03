@@ -30,13 +30,67 @@
 <body>
 
     <style>
-        a{
-            text-decoration: none;
-        }
+            a{
+                text-decoration: none;
+            }
+
+            .loaderContainer {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+            }
+
+
+            .loader {
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                display: inline-block;
+                border-top: 4px solid #FFF;
+                border-right: 4px solid transparent;
+                box-sizing: border-box;
+                animation: rotation 1s linear infinite;
+            }
+            .loader::after {
+                content: '';  
+                box-sizing: border-box;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                border-left: 4px solid hsl(215, 91%, 60%);
+                border-bottom: 4px solid transparent;
+                animation: rotation 0.5s linear infinite reverse;
+            }
+            @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+            } 
+
     </style>
 
+    @yield('css')
+
+    
     <div id="app">
 
+        <div id="LoaderContainer" class="loaderContainer">
+            <span class="loader"></span>
+        </div>
+        
         <header class="header p-2" id="header">
             <nav class="navbar container">
                <a href="{{ route('index') }}" id="HomeAppName" class="brand">SIS-IT</a>
@@ -52,20 +106,22 @@
                     </li>
                     @if ( Auth::check() )
                         
+                    @can('admin.index')
                         <li class="menu-item">
                             <a href="{{ route('home') }}" class="menu-link">Dashboard</a>
                         </li>
+                    @endcan
                         <li class="menu-item">
-                            <a href="{{ route('logout') }}" class="menu-link">Cerrar sesión</a>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="menu-link">Cerrar sesión</button>
+                            </form>
                         </li>
 
                     @else
 
                         <li class="menu-item">
-                            <a href="{{ route('login') }}" class="menu-link">Login</a>
-                        </li>
-                            <li class="menu-item">
-                            <a href="{{ route('register') }}" class="menu-link">Registro</a>
+                            <a href="{{ route('login.otp') }}" class="menu-link">Login</a>
                         </li>
                         
                     @endif
@@ -84,6 +140,25 @@
     </div>
     
 </body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeLoader = () => {
+                const loaderContainer = document.getElementById('LoaderContainer');
+                loaderContainer.style.display = 'none';
+            }
+            const openLoader = () => {
+                const loaderContainer = document.getElementById('LoaderContainer');
+                loaderContainer.style.display = 'flex';
+            }
+
+            setTimeout(() => {
+                closeLoader();
+            }, 1000);
+        });
+    </script>
+
+    @yield('js')
 
     <script src="{{ asset('App.js') }}"></script>
     

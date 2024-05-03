@@ -91,6 +91,6 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'picture_path' => $data['picture'],
             'gender' => $data["gender"]
-        ]);
+        ])->assignRole('empleado');
     }
 }

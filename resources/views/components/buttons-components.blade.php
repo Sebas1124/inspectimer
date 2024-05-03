@@ -60,6 +60,7 @@
             _token: token
         },
         success: function(response) {
+            closeLoader();
             Swal.fire({
                 title: tipo,
                 text: response.message,
@@ -76,6 +77,7 @@
 
         },
         error: function(error) {
+            closeLoader();
             Swal.fire({
                 title: tipo,
                 text: error.responseJSON.message,
@@ -88,6 +90,15 @@
             BreakFinish.disabled = true;
         }
         });
+    }
+
+    const closeLoader = () => {
+        const loaderContainer = document.getElementById('LoaderContainer');
+        loaderContainer.style.display = 'none';
+    }
+    const openLoader = () => {
+        const loaderContainer = document.getElementById('LoaderContainer');
+        loaderContainer.style.display = 'flex';
     }
 
     InicioJornadaButton.addEventListener('click', (e) => {
@@ -106,9 +117,14 @@
         }).then((result) => {
             if (result.isConfirmed) {
 
+                openLoader();
                 const userId    = document.getElementById('UserInputId').value;
-                const hora      = new Date().toLocaleTimeString().split(' ')[0];
+                const getFull   = new Date();
+                const horas     = getFull.getHours();
+                const minutos   = getFull.getMinutes();
+                const segundos  = getFull.getSeconds();
                 const fecha     = new Date().toLocaleDateString();
+                const hora      = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
                 const token     = '{{ csrf_token() }}';
                 const tipo      = 'Inicio de jornada';
 
@@ -134,9 +150,15 @@
         }).then((result) => {
             if (result.isConfirmed) {
 
+                openLoader();
+
                 const userId    = document.getElementById('UserInputId').value;
-                const hora      = new Date().toLocaleTimeString().split(' ')[0];
+                const getFull   = new Date();
+                const horas     = getFull.getHours();
+                const minutos   = getFull.getMinutes();
+                const segundos  = getFull.getSeconds();
                 const fecha     = new Date().toLocaleDateString();
+                const hora      = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
                 const token     = '{{ csrf_token() }}';
                 const tipo      = 'Fin de jornada';
 

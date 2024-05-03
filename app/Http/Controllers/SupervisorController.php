@@ -26,9 +26,10 @@ class SupervisorController extends Controller
             ->select('users.name', 'users.email', 'horas_empleados.*', 'aprobadas.status')
             ->get();
 
-        dd($usersPendingStatus, $usersCurrent);
+        $finalArray = array_merge($usersPendingStatus->toArray(), $usersCurrent->toArray());
 
-        return view('admin.employee.index', compact('users'));
+
+        return view('admin.employee.index', compact('finalArray'));
     }
 
     public function store( Request $request ){
@@ -37,13 +38,20 @@ class SupervisorController extends Controller
 
         $verify = horas_empleados::where('userId', $request->userId)
             ->where('fecha', $fecha)
-            ->where('tipo', $request->tipo)
             ->first();
-            
-        if( $verify ){
-            throw new \Exception("Ya se ha registrado un $request->tipo para este empleado en esta fecha, $fecha");
+
+        if ( $request->tipo === 'Inicio de jornada' ) {
+            if( $verify && $verify->hora_fin === NULL ){
+                throw new \Exception("Ya se ha registrado un $request->tipo para este empleado en esta fecha, $fecha");
+            }
         }
 
+        if ( $request->tipo === 'Fin de jornada' ) {
+            if( $verify && $verify->hora_fin ){
+                throw new \Exception("No se ha registrado un Inicio de jornada para este empleado en esta fecha, $fecha");
+            }
+        }
+            
         if( $request->tipo === 'Fin de jornada' ){
 
             $exists = horas_empleados::where('userId', $request->userId)
@@ -66,6 +74,7 @@ class SupervisorController extends Controller
 
             $exists->hora_fin = $horaFin;
             $exists->horas = $horas;
+            $exists->tipo = 'fin de jornada';
             $exists->save();
 
             return json_encode(['message' => 'Horas registradas correctamente']);
