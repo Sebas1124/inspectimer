@@ -16,8 +16,9 @@ Route::middleware('auth')->middleware('can:admin.index')->prefix('admin')->name(
         Route::get('/', [App\Http\Controllers\UsersController::class, 'index'])->name('index');
         Route::get('/create', [App\Http\Controllers\UsersController::class, 'create'])->name('create');
         Route::post('/store', [App\Http\Controllers\UsersController::class, 'store'])->name('store');
-        Route::get('/edit/{id}', [App\Http\Controllers\UsersController::class, 'edit'])->name('edit');
-        Route::get('/destroy/{id}', [App\Http\Controllers\UsersController::class, 'destroy'])->name('destroy');
+        Route::GET('/edit/{id}', [App\Http\Controllers\UsersController::class, 'edit'])->name('edit');
+        Route::POST('/update/{id}', [App\Http\Controllers\UsersController::class, 'update'])->name('update');
+        Route::DELETE('/destroy/{id}', [App\Http\Controllers\UsersController::class, 'destroy'])->name('destroy');
     });
 
 });

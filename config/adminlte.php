@@ -310,6 +310,11 @@ return [
             'url' => 'admin/employees',
             'icon' => 'fas fa-fw fa-eye',
         ],
+        [
+            'text' => 'Informes',
+            'url' => 'admin/reports',
+            'icon' => 'fas fa-fw fa-file',
+        ],
         
     ],
 

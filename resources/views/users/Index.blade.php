@@ -14,7 +14,9 @@
             ">Usuarios</h3>
 
             <div class="card-tools">
-                <button id="openModal" class="btn btn-primary">Crear usuario</button>
+                <button data-type="create" class="btn btn-primary openModal" data-modal-title="Crear un usuario" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Crear usuario
+                </button>
             </div>
         </div>
 
@@ -40,11 +42,13 @@
                             <td>{{ $user->email }}</td>
                             
                             <td>
-                                <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-info">Editar</a>
+                                <button data-type="edit" class="btn btn-info openModal" data-modal-title="Editar usuario" data-userId="{{ $user->id }}" data-modal-content="Contenido del modal de edición" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Editar
+                                </button>
                                 <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                                    <button class="btn btn-danger buttonDestroy" type="submit">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
@@ -53,7 +57,7 @@
             </table>
         </div>
 
-        @component('components.modal-component')
+        @component('components.modal-edit-component')
             
         @endcomponent
 
@@ -67,6 +71,45 @@
 @stop
 
 @section('js')
+
+@if (session('success'))
+
+<script>
+    Swal.fire(
+        'Exito!',
+        '{{ session('success') }}',
+        'success'
+    )
+</script>
+    
+@endif
+
+<script>
+
+    const buttonDestroy = document.querySelectorAll('.buttonDestroy');
+
+    buttonDestroy.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const form = e.target.parentElement;
+            Swal.fire({
+                title: '¿Estas seguro?',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            })
+        });
+    });
+
+
+</script>
 
     
 

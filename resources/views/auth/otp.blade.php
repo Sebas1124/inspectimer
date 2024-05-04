@@ -123,6 +123,15 @@
         return Array.from(inputs).every((item) => !isNaN(item.value));
     };
 
+    const closeLoader = () => {
+        const loaderContainer = document.getElementById('LoaderContainer');
+        loaderContainer.style.display = 'none';
+    }
+    const openLoader = () => {
+        const loaderContainer = document.getElementById('LoaderContainer');
+        loaderContainer.style.display = 'flex';
+    }
+
     const getOtpText = () => {
         let text = "";
         inputs.forEach((input) => {
@@ -135,6 +144,8 @@
         if ( isAllInputFilled() && isAllInputNumeric() ) {
             const text = getOtpText();
 
+            openLoader();
+
             $.ajax({
                 url: "{{ route('login.confirm') }}",
                 type: "POST",
@@ -145,11 +156,14 @@
                     password: "{{ $password }}"
                 },
                 success: function(response) {
+                    closeLoader();
                     Swal.fire({
                         icon: 'success',
                         title: 'Éxito',
                         text: 'Has iniciado sesión correctamente'
                     }).then(() => {
+
+                        openLoader();
                         
                         $.ajax({
                             url: "{{ route('login') }}",
