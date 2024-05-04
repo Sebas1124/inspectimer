@@ -37,6 +37,13 @@
         <table style="width: 100%;">
           <tbody>
             <tr style="height: 0;">
+              <td>
+                <img
+                  src="{{ asset('images/logo.png') }}"
+                  alt="SIS-IT"
+                  style="width: 100px; height: 100px;"
+                />
+              </td>
               <td style="text-align: right;">
                 <span
                   style="font-size: 16px; line-height: 30px; color: #ffffff;"

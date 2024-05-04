@@ -21,31 +21,13 @@
             </button>
         </div>
     </div>
-    @if ( !$disabled )
-        <div class="row mb-2">
-            <div class="col mb-2">
-                <button {{ isset($breakDisabled) && $breakDisabled ? 'disabled' : '' }} id="BreakStart" class="btn btn-outline-primary w-100 btn-lg">
-                    Inicio de descanso
-                </button>
-            </div>
-            <div class="col mb-2">
-                <button {{ isset($disabled) && $disabled ? 'disabled' : '' }} id="BreakFinish" class="btn btn-outline-warning w-100 btn-lg">
-                    Fin de descanso
-                </button>
-            </div>
-        </div>
-    @endif
+
 </div>
 
 <script>
 
     const InicioJornadaButton = document.getElementById('InicioJornadaButton');
     const FinJornadaButton    = document.getElementById('FinJornadaButton');
-    const BreakStart          = document.getElementById('BreakStart');
-    const BreakFinish         = document.getElementById('BreakFinish');
-
-    BreakStart.disabled = true;
-    BreakFinish.disabled = true;
 
     const storeJornada = ( userId, hora, fecha, token, tipo ) => {
 

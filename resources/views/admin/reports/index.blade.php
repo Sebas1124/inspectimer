@@ -21,6 +21,7 @@
                     <th>Administrador</th>
                     <th>Email Administrador</th>
                     <th>Estado de horas</th>
+                    <th>Comentario</th>
                     <th>fecha</th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@
                         <td>{{ $user["nombre_admin"] }}</td>
                         <td>{{ $user["email_admin"] }}</td>
                         <td>{{ $user["name_status"] }}</td>
+                        <td>{{ $user["comentario"] }}</td>
                         <td>{{ $user["fecha"] }}</td>
 
                     </tr>

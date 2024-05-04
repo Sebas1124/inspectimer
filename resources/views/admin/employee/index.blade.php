@@ -36,7 +36,7 @@
                                     <button disabled class="btn btn-outline-primary">
                                         En curso
                                     </button>
-                                    <button class="btn btn-outline-danger">
+                                    <button data-registroId="{{ $user["id"] }}" class="btn btn-outline-danger cancelHoras">
                                         Rechazar horas
                                     </button>
                                 </td>
@@ -45,7 +45,7 @@
                                     <button data-registroId="{{ $user["id"] }}" class="btn btn-outline-primary acceptButton">
                                         Aceptar horas
                                     </button>
-                                    <button class="btn btn-outline-danger">
+                                    <button data-registroId="{{ $user["id"] }}" class="btn btn-outline-danger cancelHoras">
                                         Rechazar horas
                                     </button>
                                 </td>
@@ -58,6 +58,10 @@
         </div>
 
         @component('components.accept-hours-component')
+            
+        @endcomponent
+
+        @component('components.cancel-hours-component')
             
         @endcomponent
 
@@ -78,11 +82,22 @@
     const acceptButton = document.querySelectorAll('.acceptButton');
     const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
 
+    const cancelHoras = document.querySelectorAll('.cancelHoras');
+    const modalCancel = new bootstrap.Modal(document.getElementById('exampleModalCancel'));
+
     acceptButton.forEach(button => {
         button.addEventListener('click', () => {
             let registroId = button.getAttribute('data-registroId');
             const registroID = document.getElementById('registroID').value = registroId;
             modal.show();
+        });
+    });
+
+    cancelHoras.forEach(btn => {
+        btn.addEventListener('click', () => {
+            let registroId = btn.getAttribute('data-registroId');
+            const registroID = document.getElementById('registroID').value = registroId;
+            modalCancel.show();
         });
     });
 

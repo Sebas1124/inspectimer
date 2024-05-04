@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SupervisorController extends Controller
 {
@@ -30,7 +31,17 @@ class SupervisorController extends Controller
 
         $finalArray = array_merge($usersPendingStatus->toArray(), $usersCurrent->toArray());
 
+        foreach ($usersCurrent as $user) {
+            $horas_admin = Horas_admin::where('horas_empleados_id', $user->id)->first();
 
+            if ( $horas_admin ) {
+                    $finalArray = array_filter($finalArray, function($value) use ($user){
+                    return $value['id'] !== $user->id;
+                });
+            }
+
+        }
+        
         return view('admin.employee.index', compact('finalArray'));
     }
 
@@ -45,6 +56,9 @@ class SupervisorController extends Controller
         if ( $request->tipo === 'Inicio de jornada' ) {
             if( $verify && $verify->hora_fin === NULL ){
                 throw new \Exception("Ya se ha registrado un $request->tipo para este empleado en esta fecha, $fecha");
+            }
+            if ( $verify && $verify->hora_fin ) {
+                throw new \Exception("Ya se ha registrado un Fin de jornada para este empleado en esta fecha, $fecha");
             }
         }
 
@@ -114,5 +128,22 @@ class SupervisorController extends Controller
 
 
         return response()->json(['message' => 'Horas aceptadas correctamente']);
+    }
+
+    public function cancelarHoras( Request $request ){
+
+        $horas      = horas_empleados::find($request->registroId);
+        $comentario = $request->comentario;
+        $userAdmin  = Auth::user()->id;
+
+        Horas_admin::create([
+            'horas_empleados_id' => $horas->id,
+            'adminUserId'        => $userAdmin,
+            'comentario'         => $comentario,
+            'status'             => 2
+        ]);
+
+
+        return response()->json(['message' => 'Horas Canceladas correctamente']);
     }
 }
