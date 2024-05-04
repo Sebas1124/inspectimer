@@ -39,4 +39,14 @@ Route::POST('/admin/employees/store', [App\Http\Controllers\SupervisorController
 ->middleware('can:employees.store')
 ->name('employees.store');
 
+Route::POST('/admin/employees/accept_hours', [App\Http\Controllers\SupervisorController::class, 'aceptarHoras'])
+->middleware('auth')
+->middleware('can:employees.store')
+->name('employees.aceptarHoras');
+
+Route::get('/admin/reports', [App\Http\Controllers\reportsController::class, 'index'])
+->middleware('auth')
+->middleware('can:employees.store')
+->name('employees.aceptarHoras');
+
 Route::get('/register', [App\Http\Controllers\UserLoginController::class, 'index'])->middleware('auth')->name('register');

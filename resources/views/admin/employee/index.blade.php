@@ -42,7 +42,7 @@
                                 </td>
                             @else
                                 <td>
-                                    <button class="btn btn-outline-primary">
+                                    <button data-registroId="{{ $user["id"] }}" class="btn btn-outline-primary acceptButton">
                                         Aceptar horas
                                     </button>
                                     <button class="btn btn-outline-danger">
@@ -57,6 +57,10 @@
             </table>
         </div>
 
+        @component('components.accept-hours-component')
+            
+        @endcomponent
+
     </div>
 
 @endsection
@@ -70,6 +74,18 @@
 
 <script>
     let table = new DataTable('#employees_table');
+
+    const acceptButton = document.querySelectorAll('.acceptButton');
+    const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+
+    acceptButton.forEach(button => {
+        button.addEventListener('click', () => {
+            let registroId = button.getAttribute('data-registroId');
+            const registroID = document.getElementById('registroID').value = registroId;
+            modal.show();
+        });
+    });
+
 </script>
 
 @endsection

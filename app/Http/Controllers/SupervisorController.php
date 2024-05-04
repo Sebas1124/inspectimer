@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Horas_admin;
 use App\Models\horas_empleados;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SupervisorController extends Controller
 {
@@ -95,5 +97,22 @@ class SupervisorController extends Controller
         ]);
 
         return json_encode(['message' => 'Horas registradas correctamente']);
+    }
+
+    public function aceptarHoras( Request $request ){
+
+        $horas      = horas_empleados::find($request->registroId);
+        $comentario = $request->comentario;
+        $userAdmin  = Auth::user()->id;
+
+        Horas_admin::create([
+            'horas_empleados_id' => $horas->id,
+            'adminUserId'        => $userAdmin,
+            'comentario'         => $comentario,
+            'status'             => 1
+        ]);
+
+
+        return response()->json(['message' => 'Horas aceptadas correctamente']);
     }
 }
