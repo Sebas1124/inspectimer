@@ -26,6 +26,6 @@ class OTPMailable extends Mailable
 
     public function build()
     {
-        return $this->view('Mail.OTP'); // Vista de correo electrónico
+        return $this->view('mail.OTP'); // Vista de correo electrónico
     }
 }
